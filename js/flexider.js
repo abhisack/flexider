@@ -64,10 +64,10 @@ function slideIt() {
  autoSlide= setTimeout(slideIt,delay*1000);
 }
 
-
-    
        var vCount= 0;
 
+    
+    //pause/resume autosliding when visibility state is changed
     document.addEventListener("visibilitychange", function() {
         if(this.visibilityState === "hidden") {
             vCount++;
@@ -76,6 +76,8 @@ function slideIt() {
             autoSlide= setTimeout(slideIt, delay*1000);
         }
 });
+    
+    //start slider after 1s of page having been loaded
 document.addEventListener("DOMContentLoaded", function() {
     if(document.visibilityState === "visible") {
     setTimeout(function startSliding() {
@@ -220,6 +222,8 @@ function swipeReady(e) {
 }
 
 function swiping(e) {
+    //prevent default action (e.g. 300ms delay for touchmove event)
+    e.preventDefault();
   function getNum(n) {
     var stringN= n+ "",
     stringLen= stringN.length;

@@ -234,10 +234,12 @@ function swiping(e) {
      
    if(_type=== "touchmove") {
        e.preventDefault();
-        var touchesMoving= e.changedTouches[0];
-                  dx= touchesMoving.pageX -this.offsetLeft;
-                  touchesMoving.layerX= dx- this.offsetLeft; 
-                  console.log(touchesMoving.layerX);
+        var touchesMoving= e.changedTouches;
+       for(var i=0; i < touchesMoving.length; i++) {
+                  dx= touchesMoving[i].pageX -this.offsetLeft;
+                  touchesMoving[i].layerX= dx- this.offsetLeft; 
+                  console.log(touchesMoving[i].layerX);
+       }
    } else if(_type=== "mousemove") {
        dx= e.layerX;
    }

@@ -1,3 +1,4 @@
+var flexider= (function() {
 //helper function
 function $$(selector, context) {
     context = context || document;
@@ -6,9 +7,10 @@ function $$(selector, context) {
 } 
 
 
+$$(".flexider").forEach(function(slider) {
+    
 
-var slider= document.querySelector(".flexider"),
-    slideCon= document.querySelector(".slide-con"),
+   var slideCon= slider.children[0],
         tX=0,
         nc=0,
     autoSlide;
@@ -53,6 +55,7 @@ function slideIt() {
     nc=0;
   }
   
+
   slideCon.style.transform= "translateX("+tX+"%)";
   for(var k=0; k<sliderNav.children.length; k++) {
     sliderNav.children[k].classList.remove("focus-nav-item");
@@ -217,7 +220,6 @@ function swipeReady(e) {
 }
 
 function swiping(e) {
-   this.style.webkitUserSelect= "none";
   function getNum(n) {
     var stringN= n+ "",
     stringLen= stringN.length;
@@ -226,18 +228,20 @@ function swiping(e) {
 }
   
  if(holdStatus=== "true") {
-    if(e.type=== "touchmove") {
-        e.preventDefault();
-        
+     this.style.webkitUserSelect= "none";
+     var _type= e.type;
+     
+     
+   if(_type=== "touchmove") {
+       e.preventDefault();
         var touchesMoving= e.changedTouches[0];
-      
-          dx= touchesMoving.pageX -this.offsetLeft;
-         touchesMoving.layerX= dx- this.offsetLeft; 
-                console.log(touchesMoving.layerX);
-        
-    } else if(e.type=== "mousemove") {
-           dx= e.layerX;
-    }
+                  dx= touchesMoving.pageX -this.offsetLeft;
+                  touchesMoving.layerX= dx- this.offsetLeft; 
+                  console.log(touchesMoving.layerX);
+   } else if(_type=== "mousemove") {
+       dx= e.layerX;
+   }
+     
    
   if(startX<dx) {
     moved= (dx-startX)* 1;
@@ -245,7 +249,6 @@ function swiping(e) {
     moved= (dx-startX)* 1;
   }
   
-   
   var tX2= (getNum(tX)*hw*2 *-1)+moved;
    
    //prevent sliding left when current slide is first one
@@ -259,14 +262,12 @@ function swiping(e) {
    }
    slideCon.style.transform= "translateX("+tX2+"px)";
    
- }
-}
+ } //holdStatus=== true
+}  //swiping
                                               
                         
 function swiped(e) {
-  if(e.type=== "touchend") {
-   
-  }
+
    this.style.webkitUserSelect= "auto";
     holdStatus= "false";
 
@@ -292,7 +293,9 @@ function swiped(e) {
     
 }
 
-
+//update hw when window is resized
 window.addEventListener("resize", function() {
   hw =slider.offsetWidth/2;
 });
+    }); //$$(".flexider)
+}) (); // flexider

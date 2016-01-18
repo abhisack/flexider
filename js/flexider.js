@@ -220,6 +220,8 @@ function swipeReady(e) {
 }
 
 function swiping(e) {
+    //prevent default action (e.g. 300ms delay for touchmove event)
+    e.preventDefault();
   function getNum(n) {
     var stringN= n+ "",
     stringLen= stringN.length;

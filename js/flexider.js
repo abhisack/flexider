@@ -8,66 +8,112 @@ function $$(selector, context) {
 
 
 $$(".flexider").forEach(function(slider) {
-    
-
    var slideCon= slider.children[0],
-        tX=0,
-        nc=0,
-    autoSlide;
+        tX=0, //translateX
+        nc=0, //navigationCounter
+        currentSlide= 0,
+    autoSlide, //setTimeout context
+ buttonNav= slider.children[0];
 
 var modeValue= slider.getAttribute("data-fs-mode"),
     delay= slider.getAttribute("data-fs-delay");
 var settings= {
   mode: modeValue
 };
-
-if(settings.mode=="auto") {
-    var sliderNav= document.createElement("nav");
+  function createAndAppendSliderNav() {
+       var sliderNav= document.createElement("nav");
     sliderNav.classList.add("slider-nav");
     slider.appendChild(sliderNav);
 
 
-for(var j=0; j<slideCon.children.length; j++) {
-  var navItem= document.createElement("a");
-  sliderNav.appendChild(navItem);
+for(var j=0; j < slideCon.children.length; j++) {
+    var navItem= document.createElement("a");
+    navItem.index= j;
+    navItem.addEventListener("click", handleDotClick, false);
+    sliderNav.appendChild(navItem);
     sliderNav.children[0].classList.add("focus-nav-item");
 }
+      return window.sliderNav = sliderNav;
 
-    function handleDots(nc) {
-    for(var k=0; k<sliderNav.children.length; k++) {
-    sliderNav.children[k].classList.remove("focus-nav-item");
   }
-  sliderNav.children[nc].classList.add("focus-nav-item");
+    
+    
+    function handleDots(nc) {
+          for(var k=0; k < sliderNav.children.length; k++) {
+          sliderNav.children[k].classList.remove("focus-nav-item");
+    }
+          sliderNav.children[nc].classList.add("focus-nav-item");
 }
+  
+  function handleDotClick() {
+         tX= this.index *100* -1;
+  for(var l=0; l < sliderNav.children.length; l++) {
+    sliderNav.children[l].classList.remove("focus-nav-item");
+  }
+     nc= this.index; sliderNav.children[nc].classList.add("focus-nav-item");
+     currentSlide= this.index; sliderNav.children[nc].classList.add("focus-nav-item");
+     slideCon.style.transform= "translateX("+ tX +"%)";
+}
+  
+    function handleButtons() {
+        if(currentSlide=== 0) {
+            buttonNav.children[0].classList.add("inactive");
+        } else {
+            buttonNav.children[0].classList.remove("inactive");
+        }
+        
+        if(currentSlide=== slideCon.children.length-1) {
+            buttonNav.children[1].classList.add("inactive");
+        } else {
+            buttonNav.children[1].classList.remove("inactive");
+        }
+    }
+    
+
+    createAndAppendSliderNav();
+
+if(settings.mode=="auto") {
+   
     
 
 function slideIt() {
   if(tX<=0 && tX>(slideCon.children.length-1)*100*-1) {
-       
+      
   tX-= 100;
     nc+=1;
+    currentSlide+=1;
+      
   } else {
+      
     tX= 0;
     slideCon.style.transition= "all 0s ease-out";
       setTimeout(function restoreTransition() {
           slideCon.style.transition= "all .3s ease-out";
-      },301);
+      }, 301);
     nc=0;
+    currentSlide+= 0;
   }
   
-
+  
+  //unhighlight all the navigation dots
   slideCon.style.transform= "translateX("+tX+"%)";
   for(var k=0; k<sliderNav.children.length; k++) {
     sliderNav.children[k].classList.remove("focus-nav-item");
   }
+    
+  //highlight the current navigation dot
   sliderNav.children[nc].classList.add("focus-nav-item");
- autoSlide= setTimeout(slideIt,delay*1000);
+  
+  
+  //set the timer
+  autoSlide= setTimeout(slideIt, delay*1000);
 }
 
-       var vCount= 0;
 
+ //stop the auto sliiding when the tab is not visible
     
-    //pause/resume autosliding when visibility state is changed
+       var vCount= 0; //visibilitState change cound
+ 
     document.addEventListener("visibilitychange", function() {
         if(this.visibilityState === "hidden") {
             vCount++;
@@ -77,7 +123,6 @@ function slideIt() {
         }
 });
     
-    //start slider after 1s of page having been loaded
 document.addEventListener("DOMContentLoaded", function() {
     if(document.visibilityState === "visible") {
     setTimeout(function startSliding() {
@@ -86,17 +131,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
   
 });
-    $$(".slider-nav a").forEach(function(el,index){
-el.addEventListener("click", function() {
-     tX= index *100* -1;
-  for(var l=0; l<sliderNav.children.length; l++) {
-    sliderNav.children[l].classList.remove("focus-nav-item");
-  }
-     nc= index; sliderNav.children[nc].classList.add("focus-nav-item");
-   slideCon.style.transform= "translateX("+tX+"%)";
-}, false);
-});
-
+    
 
 } else if (settings.mode=="manual") {
     var ns= "http://www.w3.org/2000/svg",
@@ -140,54 +175,56 @@ prev.addEventListener("click", movePrevious, false);
 
 }
 
-
 //Functions for Event Handlers
 
 window.addEventListener("keydown", function(e) {
     if(e.keyCode=== 39) {
-       clearTimeout(autoSlide);
+        clearTimeout(autoSlide);
         moveNext();
     } else if(e.keyCode=== 37) {
-      clearTimeout(autoSlide);
+        clearTimeout(autoSlide);
         movePrevious();
     }
   
-
+    
 });
 
 
 function moveNext() {
     tX -= 100;
   
+
     if(tX > (slideCon.children.length) * 100*-1) {
-      nc+=1;
-     slideCon.style.transform= "translateX("+tX+"%)";
+        nc+= 1;
+        currentSlide+= 1;
+        slideCon.style.transform= "translateX(" + tX + "%)";
     } else {
         tX=(slideCon.children.length-1) * 100*-1;
-      nc= slideCon.children.length-1;
+        nc= slideCon.children.length-1;
+        currentSlide= slideCon.children.length-1;
     }
   
-if(settings.mode=== "auto") {
+    
+
 handleDots(nc);
-}
+handleButtons();
+    
 }
 
 function movePrevious() {
    
-   tX += 100;
-    if(tX <= 0) {
-    nc-=1;
-    slideCon.style.transform= "translateX("+tX+"%)";
-    } else {
-        tX=0;
-      nc= 0;
-    }
+    if(tX < 0) {
+        tX += 100;
+                  nc-=1;
+                  currentSlide-= 1;
+                 slideCon.style.transform= "translateX("+tX+"%)";
+    } 
      
-if(settings.mode=== "auto") {
-handleDots(nc);
+      handleDots(nc);
+      handleButtons();
 }
-
-}
+    
+    
 window.addEventListener("keyup", function(e) {
   if(e.keyCode===39 || e.keyCode===37) {
     if(settings.mode=== "auto") {
@@ -198,32 +235,46 @@ window.addEventListener("keyup", function(e) {
 
 
 //swiping part
-var hw= slider.offsetWidth/2,
-    startX, dx, moved, holdStatus= false;
+var hw= slider.offsetWidth/2, //half the width of slider
+    startX, //users initial mouse/touch position
+    dx,     //the  length user has dragged
+    tX2,    //translate X second value
+    moved,  
+    holdStatus= false; //whether user is holding
 
 slider.addEventListener("mousedown", swipeReady, false);
-slider.addEventListener("mousemove", swiping, false);
-slider.addEventListener("mouseup", swiped, false);
 slider.addEventListener("touchstart", swipeReady, false);
-slider.addEventListener("touchmove", swiping, false);
 slider.addEventListener("touchend", swiped, false);
+slider.addEventListener("mouseup", swiped, false);
+
                         
 function swipeReady(e) {
+    
+  slider.addEventListener("mousemove", swiping, false);
+  slider.addEventListener("touchmove", swiping, false);
+    
   holdStatus= "true";
+    
   clearTimeout(autoSlide);
+    
   if(e.type=== "touchstart") {
-    var touches= e.changedTouches;
-    for(var i=0; i<touches.length; i++) {
-      startX= touches[i].pageX -this.offsetLeft;
-    }
+    var touches= e.changedTouches[0];
+      startX= touches.pageX -this.offsetLeft;
+    
   } else if (e.type=== "mousedown") {
   startX= e.layerX;
   }
 }
 
+    
+    
 function swiping(e) {
-    //prevent default action (e.g. 300ms delay for touchmove event)
+    //prevent default action (e.g. 300ms delay on touchmove event)
     e.preventDefault();
+    
+    //set transition to 'none' to prevent jerks
+    slideCon.style.transition= "none";
+    
   function getNum(n) {
     var stringN= n+ "",
     stringLen= stringN.length;
@@ -234,16 +285,15 @@ function swiping(e) {
  if(holdStatus=== "true") {
      this.style.webkitUserSelect= "none";
      var _type= e.type;
-     
+     console.log(e.layerX);
      
    if(_type=== "touchmove") {
        e.preventDefault();
-        var touchesMoving= e.changedTouches;
-       for(var i=0; i < touchesMoving.length; i++) {
-                  dx= touchesMoving[i].pageX -this.offsetLeft;
-                  touchesMoving[i].layerX= dx- this.offsetLeft; 
-                  console.log(touchesMoving[i].layerX);
-       }
+        var touchesMoving= e.changedTouches[0];
+       
+                  dx= touchesMoving.pageX -this.getBoundingClientRect().left;
+                  touchesMoving.layerX= dx- this.getBoundingClientRect().left; 
+       
    } else if(_type=== "mousemove") {
        dx= e.layerX;
    }
@@ -255,7 +305,7 @@ function swiping(e) {
     moved= (dx-startX)* 1;
   }
   
-  var tX2= (getNum(tX)*hw*2 *-1)+moved;
+   tX2= (getNum(tX)*hw*2 *-1)+moved;
    
    //prevent sliding left when current slide is first one
    if(getNum(tX)==0 && moved > 0) {
@@ -273,20 +323,30 @@ function swiping(e) {
                                               
                         
 function swiped(e) {
+   
+    
+  slider.removeEventListener("mousemove", swiping, false);
+  slider.removeEventListener("touchmove", swiping, false);
+  
+    
+    //restore transition to default
+   
+    slideCon.style.transition= "all .3s ease-out";
 
+    
    this.style.webkitUserSelect= "auto";
     holdStatus= "false";
 
   
   if(moved > 0) {
-    if(moved>hw && startX<hw) {
+    if(moved > hw && startX < hw/1.5) {
       movePrevious();
     } else {
        slideCon.style.transform= "translateX("+tX+"%)";
     }
   }
     if(moved < 0) {
-      if(-1*moved > hw && startX>hw) {
+      if(-1*moved > hw && startX > hw/1.5) {
         moveNext();
       } else {
          slideCon.style.transform= "translateX("+tX+"%)";
@@ -296,6 +356,7 @@ function swiped(e) {
      if(settings.mode=== "auto") {
     autoSlide= setTimeout(slideIt, delay*1000);
     }  
+    
     
 }
 

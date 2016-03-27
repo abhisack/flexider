@@ -5,13 +5,435 @@
         <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1"/>
         <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no">
         <title>Flexider.JS</title>                                                                                   
-       <meta name="title" content="Flexider.JS" />
-      <meta name="author" content="Abhishek Sachan" />
-       <meta name="description" content="Flexider" />
-        <link rel="stylesheet" href="css/main.css"/>
+        <meta name="title" content="Flexider.JS" />
+        <meta name="author" content="Abhishek Sachan" />
+        <meta name="description" content="Flexider" />
+        <link rel="stylesheet" href="flexider/flexider.css"/>
+        
+        <style>
+ body {
+  background-color: ;
+  color: #555;
+  font-size: 1em;
+  font-family: 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  margin: 0;
+}
+
+
+h1,h2,h3,h5,h6 {
+  margin: 0;
+}
+
+a {
+	text-decoration: none;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+pre {
+  background: #456;
+  overflow: auto;
+}
+
+pre code {
+  color: rgba(255, 255, 255, 0.68);
+  line-height: 1.5;
+}
+
+pre code em {
+  color: #fb3;
+}
+
+html,
+body {
+  height: 100%;
+}
+
+ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+}
+
+header {
+	position: relative; /**stacking context***/
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  -webkit-flex-wrap: wrap;
+      -ms-flex-wrap: wrap;
+          flex-wrap: wrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+	font-size: 0.8rem;
+  padding: 1em 2em;
+  background: white;
+  box-shadow: 0 .1em .1em rgba(51, 51, 51, 0.3);
+  z-index: 15;
+  -webkit-transition: all .3s ease-out;
+  transition: all .3s ease-out;
+}
+
+.stick {
+  font-size: 0.6rem;
+  position: fixed;
+  top: 0;
+  right: 0;
+  left: 0; 
+  -webkit-animation: bringOut .1s ease-out; 
+          animation: bringOut .1s ease-out;
+}
+    
+@-webkit-keyframes bringOut {
+  from {
+        -webkit-transform: translateY(-100%);
+                transform: translateY(-100%);
+    }
+}
+    
+@keyframes bringOut {
+  from {
+        -webkit-transform: translateY(-100%);
+                transform: translateY(-100%);
+    }
+}
+            
+header h1 {
+  white-space: nowrap;
+  margin-bottom: .5em; 
+ font-size: 1.5em;
+}
+
+.logo {
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  background: -webkit-linear-gradient(315deg, #456 50%, #333 0);
+  background: linear-gradient(135deg, #456 50%, #333 0);
+  margin-right: .1em;
+  color: white;
+  border-radius: .1em;
+}
+            
+header h1 .text {
+  font-size: 2.7em;
+  vertical-align: middle;
+}
+
+
+header h1,
+header nav {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+}
+
+header h1 .logo {
+  display: inline-block;
+}
+
+header nav {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+  -webkit-flex-flow: row nowrap;
+      -ms-flex-flow: row nowrap;
+          flex-flow: row nowrap;
+  white-space: nowrap;
+}
+
+header nav a {
+	position: relative;
+	-webkit-box-flex: 1;
+	-webkit-flex: 1 1 100px;
+	    -ms-flex: 1 1 100px;
+	        flex: 1 1 100px;
+  padding: 1em 2em;
+  border-radius: .3em;
+  color: #456;
+  margin-left: 1em;
+  -webkit-transition: box-shadow .1s ease-out;
+  transition: box-shadow .1s ease-out;
+}
+
+header nav a span {
+	position: relative;
+  z-index: 2;
+}
+
+header nav a::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  background: #456;
+  border: .3em solid #456;
+  -webkit-transform: skew(-15deg);
+          transform: skew(-15deg);
+  border-radius: 1em .5em;
+  -webkit-transition: box-shadow .1s ease-out;
+  transition: box-shadow .1s ease-out;
+  z-index: 1;
+  box-shadow: 0 .1em .1em rgba(51, 51, 51, 0.4);
+}
+
+
+
+header nav a {
+  color: white;
+}
+
+header nav a:active {
+  -webkit-transform: translateY(.1em);
+          transform: translateY(.1em);
+  opacity: 0.9;
+}
+
+header nav a:active::after {
+  box-shadow: 0 0 0 rgba(51, 51, 51, 0.4);
+}
+
+.slider-area {
+  height: 80vh;
+}
+
+.docs-area {
+
+}
+
+.block {
+  font-size: 1.8rem;
+  padding: 3em 0;
+  background: #fb3;
+  -webkit-clip-path: polygon(0 0, 100% 0, 100% calc(100% - 1em), 0 100%)
+}
+
+.block p {
+ padding: 0 2em;
+}
+
+.doc-sec {
+	font-size: 1.2rem;
+  padding: 0 10em;
+  margin: 4em 0;
+}
+
+.doc-sec article {
+  margin: 2em 0;
+}
+
+.doc-sec article .title {
+  position: relative;
+  color: #456;
+  margin-bottom: 2em;
+}
+
+
+.doc-sec article .title::after {
+  content: "";
+  position: absolute;
+  top: 110%;
+  left: 0;
+  width: 30px;
+  border-bottom: .3em solid;
+}
+.doc-sec article p {
+	line-height: 1.5;
+}
+.doc-sec article strong {
+  padding: .1em 1em;
+  background:  #456;
+  color: white;
+}
+
+.doc-sec .steps {
+  counter-reset: step;
+}
+
+.doc-sec .steps li {
+	position: relative;
+  padding: 0 4em;
+  counter-increment: step;
+}
+
+.doc-sec .steps li::after {
+  content: counter(step);
+  position: absolute;
+  top: -.2em;
+  width: 2em;
+  height: 2em;
+  line-height: 2em;
+  text-align: center;
+  border-radius: 50%;
+  left: 0;
+  color: #456;
+  border: .3em solid;
+  
+}
+
+
+.doc-sec#get-started:target {
+  -webkit-animation: flash 1s ease-out;
+          animation: flash 1s ease-out;
+}
+
+footer {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+  -webkit-flex-flow: row wrap;
+      -ms-flex-flow: row wrap;
+          flex-flow: row wrap;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+      -ms-flex-align: center;
+          align-items: center;
+  -webkit-box-pack: justify;
+  -webkit-justify-content: space-between;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+  padding: 1em 2em;
+  background: #456;
+  color: white;
+}
+
+footer a {
+  color: white;
+}
+
+
+footer > p {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 1 auto;
+      -ms-flex: 0 1 auto;
+          flex: 0 1 auto;
+}
+footer p a {
+    border-bottom: .1em solid;
+}
+
+
+footer .btn {
+  -webkit-box-flex: 0;
+  -webkit-flex: 0 0 auto;
+      -ms-flex: 0 0 auto;
+          flex: 0 0 auto;
+  background: #1DA1F2;
+  padding: .5em 1em;
+  border-radius: 1em;
+  box-shadow: 
+               0 .1em .1em rgba(51, 51, 51, 0.53);
+}
+
+footer .btn:active {
+  box-shadow:  0 0 0 0;
+  -webkit-transform: scale(1.2);
+          transform: scale(1.2);
+}
+@-webkit-keyframes flash {
+  50% {
+    background: #fb3;
+  }
+  
+  100% {
+    background: transparent;
+  }
+}
+@keyframes flash {
+  50% {
+    background: #fb3;
+  }
+  
+  100% {
+    background: transparent;
+  }
+}
+
+@media screen and (max-width: 900px) {
+	
+html {
+  font-size: 14px;
+}
+  
+  header {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  header h1 {
+    text-align: center;
+  }
+  
+ .docs-area .doc-sec,
+  .block p {
+   padding: 0 .9em;
+ }
+  
+ .doc-sec .steps li {
+    padding: 2em 0;
+  }
+}
+
+
+ .flexider {
+     width: 100%;
+     height: 100%;
+    
+ }
+            
+.flexider .slide {
+     font-size: 10em;
+    
+}
+            
+            
+@media screen and (max-width: 800px) {
+	
+html {
+  font-size: 13px;
+}
+  
+  header {
+    -webkit-box-pack: center;
+    -webkit-justify-content: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+  }
+  header h1 {
+    text-align: center;
+  }
+}
+
+        </style>
+        
     </head>
      <body>
-<div class="flexider" data-fs-mode="auto" data-fs-delay="3">
+<header>
+    <h1><span class="logo">F</span><span class="text">lexider</span></h1>
+  <nav>
+    <a href="#get-started"><span>GET STARTED</span></a>
+    <a href="#"><span>DOWNLOAD/FORK</span></a>
+  </nav>
+</header>
+<section class="slider-area">
+        
+          <div class="flexider" data-fx-mode="auto" data-fx-delay="3">
   <div class="slide-con">
     <div class="slide">1</div>
     <div class="slide">2</div>
@@ -20,7 +442,123 @@
     <div class="slide">5</div>
   </div>
 </div>
-         <script src="js/flexider.js"></script>
+</section>
+         
+<section class="docs-area">
+  <div class="block">
+    <p>
+Flexider is a reponsive, accessible and lightweight slider built with pure JavaScript with no external dependency.
+    </p>
+  </div>
+  
+  <div class="doc-sec">
+    <article>
+      <h1 class="title">Why Use Flexider?</h1>
+      <p>There are bunch of slider libraries on GitHub, then why use Flexider? Because apart from traditional features a slider is supposed to have, Flexider comes with touch+keyboard support and is 'visibility-aware' which gives you native-like experience across devices. Users don't have to forcibly use next/previous buttons to switch between slides, they can swipe or use keyboard's (if available) <strong>←</strong> & <strong>→</strong> buttons to do so. If you're building something like a progressive web-app, Flexider would be a good fit.
+     </article>
+ </div>
+  
+  <div class="doc-sec" id="get-started">
+    <article>
+      <h1 class="title">Get Started</h1>
+      <ul class="steps">
+        <li>
+          <p>Include files:</p>
+          <pre>
+          <code>
+          
+          &lt;link rel="stylesheet" href="flexider.css"/>
+          &lt;script src=".../flexider.js"> &lt;/script>
+          </code>
+          </pre>
+        </li>
+        
+        <li>
+          <p>Put markup</p>
+          <pre>
+          <code>
+    &lt;div class="flexider" data-fs-mode="auto" data-fs-delay="3">
+       &lt;div class="slide-con">
+    
+          &lt;div class="slide">
+              <em>//slide 1 stuff here</em>
+          &lt;/div>
+    
+          &lt;div class="slide">
+              <em>//slide 2 stuff here</em>
+          &lt;/div>
+    
+         <em>//other slides</em>
+    
+       &lt;/div>
+   &lt;/div>
+          </code>
+          </pre>
+        </li>
+      </ul>
+    </article>
+  </div>
+  
+  <div class="doc-sec">
+    <article>
+      <h1 class="title">Customzing Flexider</h1>
+      
+ <section>
+      <h4>Mode</h3>
+      <p> Flexider has two modes- <strong>auto</strong> & <strong>manual</strong>. When set to <strong>auto</strong> flexider's slides move automatically and when set to <strong>manual</strong> flexider gets next/previous buttons and it's slides move only on user-action. You can change this mode easily by changing <strong>data-fx-mode</strong> attribute's value on a flexider wrapper-</p>
+   
+   <pre>
+   <code>
+   
+      &lt;div class="flexider" <em>data-fx-mode="auto || manual"</em>>
+   </code>
+   
+   </pre>
+      </section>
+      
+      <section>
+        <h4>Delay b/w auto-moves</h4>
+        <p>You can set the delay between 'auto-moves' using <strong>data-fx-delay</strong> attribute (if data-fx-mode is set to auto).</p>
+        <pre>
+        <code>
+        
+        &lt;div class="flexider" data-fx-mode="auto" <em>data-fx-mode="3"</em>>
+        <em>//data-fx-mode takes time in seconds</em>
+        </code>
+          
+        </pre>
+      </section>
+    </article>
+  </div>
+</section>
+
+<footer>
+  <p>Made with hands and an editor by <a href="http://abhisheksachan.in"> Abhishek Sachan</a></p>
+  
+  <a href="http://twitter.com/intent/tweet?text=Flexider, an accessible slider built for speed -&url=https://github.com/abhisack/flexider/&via=AbhishekSachan3/" class="btn">TWEET</a>
+</footer>
+         
+         <script src="flexider/flexider.js"></script>
+         <script>
+             (function() {
+  var header= document.querySelector("header"),
+      sliderArea= document.querySelector(".slider-area"),
+      dWidth= header.offsetHeight + sliderArea.offsetHeight;
+window.addEventListener("scroll", function() {
+  if(window.pageYOffset > dWidth + header.offsetHeight) {
+       header.classList.add("stick");
+    console.log("reached that point");
+     } else {
+       header.classList.remove("stick");
+     }
+});
+  
+  window.addEventListener("resize", function() {
+    headerWidth= header.offsetHeight;
+  });
+
+})();
+         </script>
                                          
     </body>
 </html>

@@ -1,6 +1,6 @@
 var flexider= (function() {
                
-//helper function (courtesy of Lea Verou)
+//helper function (courtesy of Lea Verou(https://twitter.com/LeaVerou))
 function $$(selector, context) {
     context = context || document;
     var elements = context.querySelectorAll(selector);
@@ -14,7 +14,7 @@ $$(".flexider").forEach(function(slider) {
              tX=0, //translateX 
    currentSlide= 0,
       buttonNav= slider.children[0],
-    autoSlide //setTimeout context
+    autoSlide; //setTimeout context
 
 var modeValue= slider.getAttribute("data-fx-mode"),
         delay= slider.getAttribute("data-fx-delay");
@@ -36,29 +36,29 @@ var settings= {
           sliderNav.appendChild(navItem);
           sliderNav.children[0].classList.add("focus-nav-item");
 }
-    return window.sliderNav = sliderNav;
+    return slider.sliderNav = sliderNav;
 
   }
     
     
     
     function handleDots(nc) {
-          for(var k=0; k < sliderNav.children.length; k++) {
-          sliderNav.children[k].classList.remove("focus-nav-item");
+          for(var k=0; k < slider.sliderNav.children.length; k++) {
+          slider.sliderNav.children[k].classList.remove("focus-nav-item");
     }
-          sliderNav.children[currentSlide].classList.add("focus-nav-item");
+          slider.sliderNav.children[currentSlide].classList.add("focus-nav-item");
 }
     
   
   function handleDotClick() {
          tX= this.index *100* -1;
       
-         for(var l=0; l < sliderNav.children.length; l++) {
-            sliderNav.children[l].classList.remove("focus-nav-item");
+         for(var l=0; l < slider.sliderNav.children.length; l++) {
+            slider.sliderNav.children[l].classList.remove("focus-nav-item");
          }
           
          currentSlide= this.index; 
-         sliderNav.children[currentSlide].classList.add("focus-nav-item");
+         slider.sliderNav.children[currentSlide].classList.add("focus-nav-item");
       
          slideCon.style.transform= "translateX("+ tX + "%)";
 }
@@ -152,7 +152,7 @@ document.addEventListener("DOMContentLoaded", function() {
 });
     
 
-} else if (settings.mode=="manual") {
+} else if (settings.mode === "manual") {
     
     //create and append the 'next' & 'previous' navigation buttons wrapped in in a 'nav'
     var ns= "http://www.w3.org/2000/svg",

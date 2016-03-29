@@ -1,6 +1,6 @@
 var flexider= (function() {
                
-//helper function (courtesy of Lea Verou)
+//helper function (courtesy of Lea Verou(https://twitter.com/LeaVerou))
 function $$(selector, context) {
     context = context || document;
     var elements = context.querySelectorAll(selector);

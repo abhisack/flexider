@@ -56,6 +56,12 @@ ul {
   padding: 0;
   margin: 0;
 }
+            
+ button {
+    border: 0;
+    outline: 0;
+    cursor: pointer;
+}
 
 header {
 	position: relative; /**stacking context***/
@@ -218,7 +224,54 @@ header nav a:active::after {
 }
 
 .slider-area {
+  position: relative;
   height: 80vh;
+}
+
+.slider-area .flexider {
+              
+    transition: opacity .1s ease-out;
+            }
+.slider-area .flexider-manual {
+    position: absolute;
+    opacity: 0;
+    pointer-events: none;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 4;
+}
+            
+.slider-area.manual-visible .flexider-manual {
+    opacity: 1;
+    pointer-events: auto;
+}
+            
+.slider-area.manual-visible .flexider-auto {
+    opacity: 0;
+    pointer-events: none;
+}
+
+
+.slider-area.manual-visible .btn-switch {
+     padding: .5em .6em;
+}
+            
+.slider-area .btn-switch {
+    position: absolute;
+    bottom: 0;
+    left: 50%;
+    background: #456;
+    box-shadow: 0 -.2em .2em rgba(68, 85, 102, 0.2);
+    transform: translateX(-50%);
+    z-index: 5;
+    transition: padding .3s ease-out;
+                
+}
+            
+.slider-area .btn-switch:active {
+    opacity: 0.9;
 }
 
 .docs-area {
@@ -337,14 +390,19 @@ footer p a {
     border-bottom: .1em solid;
 }
 
+            
+.btn {
+    background: #1DA1F2;
+    padding: .5em 1em;
+    color: white;
+    white-space: nowrap;
+}
 
 footer .btn {
   -webkit-box-flex: 0;
   -webkit-flex: 0 0 auto;
       -ms-flex: 0 0 auto;
           flex: 0 0 auto;
-  background: #1DA1F2;
-  padding: .5em 1em;
   border-radius: 1em;
   box-shadow: 
                0 .1em .1em rgba(51, 51, 51, 0.53);
@@ -460,7 +518,7 @@ html {
 </header>
 <section class="slider-area">
         
-          <div class="flexider" data-fx-mode="auto" data-fx-delay="3">
+    <div class="flexider flexider-auto" data-fx-mode="auto" data-fx-delay="3">
   <div class="slide-con">
     <div class="slide">1</div>
     <div class="slide">2</div>
@@ -469,6 +527,17 @@ html {
     <div class="slide">5</div>
   </div>
 </div>
+    
+    <div class="flexider flexider-manual" data-fx-mode="manual">
+  <div class="slide-con">
+    <div class="slide">1</div>
+    <div class="slide">2</div>
+    <div class="slide">3</div>
+    <div class="slide">4</div>
+    <div class="slide">5</div>
+  </div>
+</div>
+    <button class="btn btn-switch">SWITCH TO 'MANUAL'</button>
 </section>
          
 <section class="docs-area">
@@ -494,7 +563,7 @@ Flexider is a reponsive, accessible and lightweight slider built with pure JavaS
           <pre>
           <code>
           
-          &lt;link rel="stylesheet" href="flexider.css"/>
+          &lt;link rel="stylesheet" href=".../flexider.css"/>
           &lt;script src=".../flexider.js"> &lt;/script>
           </code>
           </pre>
@@ -504,7 +573,7 @@ Flexider is a reponsive, accessible and lightweight slider built with pure JavaS
           <p>Put markup</p>
           <pre>
           <code>
-    &lt;div class="flexider" data-fs-mode="auto" data-fs-delay="3">
+    &lt;div class="flexider" data-fx-mode="auto" data-fx-delay="3">
        &lt;div class="slide-con">
     
           &lt;div class="slide">
@@ -528,7 +597,7 @@ Flexider is a reponsive, accessible and lightweight slider built with pure JavaS
   
   <div class="doc-sec">
     <article>
-      <h1 class="title">Customzing Flexider</h1>
+      <h1 class="title">Customizing Flexider</h1>
       
  <section>
       <h4>Mode</h3>
@@ -545,7 +614,7 @@ Flexider is a reponsive, accessible and lightweight slider built with pure JavaS
       
       <section>
         <h4>Delay b/w auto-moves</h4>
-        <p>You can set the delay between 'auto-moves' using <strong>data-fx-delay</strong> attribute (if data-fx-mode is set to auto).</p>
+          <p>You can set the delay between 'auto-moves' using <strong>data-fx-delay</strong> attribute (if <strong>data-fx-mode</strong> is set to <strong>auto</strong>).</p>
         <pre>
         <code>
         
@@ -581,7 +650,6 @@ Flexider is a reponsive, accessible and lightweight slider built with pure JavaS
 window.addEventListener("scroll", function() {
   if(window.pageYOffset > dWidth + header.offsetHeight) {
        header.classList.add("stick");
-    console.log("reached that point");
      } else {
        header.classList.remove("stick");
      }
@@ -592,6 +660,22 @@ window.addEventListener("scroll", function() {
   });
 
 })();
+             
+ (function() {
+               
+     var btnSwitch= document.querySelector(".btn-switch"),
+         sliderArea=  document.querySelector(".slider-area");
+     
+     btnSwitch.addEventListener("click", function() {
+         sliderArea.classList.toggle("manual-visible");
+         
+         if(sliderArea.classList.contains("manual-visible")) {
+             this.textContent= "switch to 'auto'";
+         } else {
+             this.textContent= "switch to 'manual'";
+         }
+     });
+             })();
          </script>
                                          
     </body>

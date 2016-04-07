@@ -258,10 +258,13 @@ Swipe Functioning
 *******************/
     
 var hw= slider.offsetWidth/2, //half the width of slider
-    startX, //users initial mouse/touch position
-    dx,     //the  length user has dragged
+    startX,
+    startY,//users initial mouse/touch position
+    dx,
+    dy,//the  length user has dragged
     tX2,    //translateX value in px
-    moved,  
+    movedX,
+    movedY,
     holdStatus= false; //whether user is holding
 
 //add always-needed events for swiping
@@ -289,9 +292,11 @@ function swipeReady(e) {
       
     //layerX (mouse position relative to the element, slider in this case) is present for 'mouse events' but not for touch events, so polyfill it
       startX= touches.pageX - this.getBoundingClientRect().left;
+      startY= touches.pageY - this.getBoundingClientRect().top;
     
   } else if (e.type=== "mousedown") {
       startX= e.layerX;
+      startY= e.layerY;
   }
 }
 
@@ -299,7 +304,6 @@ function swipeReady(e) {
     
 function swiping(e) {
     //prevent default action (e.g. 300ms delay on touchmove event)
-    e.preventDefault();
     
     //set transition to 'none' to prevent jerks
     slideCon.style.transition= "none";
@@ -317,10 +321,10 @@ function swiping(e) {
      this.style.webkitUserSelect= "none";
      
    if(e.type=== "touchmove") {
-       //prevent default action (e.g. 300ms delay on touchmove event)
-        e.preventDefault();
        
-        var touchesMoving= e.changedTouches[0];
+     var touchesMoving= e.changedTouches[0];
+         dy= touchesMoving.pageY  - this.getBoundingClientRect().top;
+        
 //layerX (mouse position relative to the element, slider in this case) is present for 'mouse events' but not for touch events, so polyfill it
                   dx= touchesMoving.pageX - this.getBoundingClientRect().left;
        
@@ -330,19 +334,28 @@ function swiping(e) {
        
    } else if(e.type=== "mousemove") {
        dx= e.layerX;
+       dy= e.layerY;
    }
      
-    moved= (dx-startX);
+    movedX= (dx-startX);
+    movedY= dy - startY;
+     
+         //prevent default action (e.g. 300ms delay on touchmove event)
+       if(Math.abs(movedY) > 5) {
+          //do nothing
+       } else {
+        e.preventDefault();
+       }
   
-   tX2= (getNum(tX)*hw*2 *-1)+moved;
+   tX2= (getNum(tX)*hw*2 *-1)+movedX;
    
    //prevent sliding right when the current slide is the first one
-   if(getNum(tX)==0 && moved > 0) {
+   if(getNum(tX)==0 && movedX > 0) {
       tX2=0;
    }
    
    //prevent sliding left when the current slide is last one
-    if(getNum(tX) == slideCon.children.length-1 && moved < 0) {
+    if(getNum(tX) == slideCon.children.length-1 && movedX < 0) {
       tX2= (slideCon.children.length-1) * hw * 2 * -1;
    }
      
@@ -368,16 +381,16 @@ function swiped(e) {
    holdStatus= "false";
 
   
-  if(moved > 0) {
-    if(moved > (hw/1.1) && startX < hw) {
+  if(movedX > 0) {
+    if(movedX > (hw/1.1) && startX < hw) {
        movePrevious();
     } else {
        slideCon.style.transform= "translateX(" + tX + "%)";
     }
   }
     
-    if(moved < 0) {
-      if(-1*moved > (hw/1.1) && startX > hw) {
+    if(movedX < 0) {
+      if(-1*movedX > (hw/1.1) && startX > hw) {
         moveNext();
       } else {
          slideCon.style.transform= "translateX(" + tX + "%)";

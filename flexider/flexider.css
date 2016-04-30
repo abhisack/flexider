@@ -174,9 +174,3 @@ body {
     opacity: 0.5;
     pointer-events: none;
 }
-@media screen and (max-width: 800px) {
-  .flexider .prev,
-  .flexider  .next {
-    display: none;
-  }
-}
